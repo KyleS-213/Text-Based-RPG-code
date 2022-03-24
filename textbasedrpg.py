@@ -120,3 +120,4 @@ while Engaged == None:
 while not Engaged == None:
     print("you are in combat")
     Combatcommandline(Engaged)
+    Engaged = None
