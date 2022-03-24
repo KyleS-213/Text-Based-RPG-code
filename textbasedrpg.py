@@ -63,7 +63,7 @@ def Maincommandline():
         You.attackcheck(Hero)
 
 
-def Combatcommandline():
+def Combatcommandline(Engaged):
     Cengaged = Engaged
     while int(Cengaged.health) > 0:
         global combatinput
@@ -73,13 +73,10 @@ def Combatcommandline():
         if combatinput == "Attackcheck":
             You.attackcheck(Hero)
         if combatinput == "Attack":
-            Enemy.Damage(Engaged, Hero.attack)
+            Engaged.Damage(Hero.attack)
             print(Engaged.health)
-    Engaged = None
-    Cengaged = None
 
 
-global Engaged
 Engaged = None
 Goblin = Enemy(
     "Goblin",
@@ -122,4 +119,4 @@ while Engaged == None:
     Maincommandline()
 while not Engaged == None:
     print("you are in combat")
-    Combatcommandline()
+    Combatcommandline(Engaged)
