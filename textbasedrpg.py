@@ -1,4 +1,5 @@
 import random
+import copy
 class Weapon:
     def __init__(self, damage, speed, name):
         self.damage = damage
@@ -41,6 +42,13 @@ class Room:
       self.south = newroom.south
       self.west = newroom.west
       self.east = newroom.east
+    def build(self,newname,newdescription,newnorth,newsouth,newwest,neweast):
+      self.name = newname
+      self.description = newdescription
+      self.north = newnorth
+      self.south = newsouth
+      self.west = newwest
+      self.east = neweast
 
 class You:
     def __init__(self, name, attack, weaponspeed, weaponname, health):
@@ -92,7 +100,7 @@ def Maincommandline():
     if maininput == "Attackcheck":
         You.attackcheck(Hero)
     if maininput == "Roomcheck":
-      Room.roomcheck(OcRoom)
+      OcRoom.roomcheck()
     if maininput == "Roomdesc":
       print(OcRoom.description)
     if maininput == "Move":
@@ -120,16 +128,19 @@ Goblin = Enemy(
     15,
     "This hulking greenish brute has four fingers and is dressed in a simple loincloth. It brings with it the smell of rot and mold",
 )
-House = Room("House","The white paint flakes off the walls of the old house, the front door creaks open and closed with the blowing of the wind",None,None,None,None)
-Forest = Room("Forest","The trees close in around you, the area is dimly lit by the few areas where the sun peaks through the canopy",None,None,None,None)
-Road = Room(
-    "Road",
-    "The road is made of a dry, yellowish dirt. The road is hard packed from decades of use.", House, None,Forest,Forest)
+NullRoom = Room(None,None,None,None,None,None)
+Road = copy.deepcopy(NullRoom)
+Forest = NullRoom
+House = NullRoom
+Road.build("Road","The road is made of a dry, yellowish dirt. The road is hard packed from decades of use.", House, None,Forest,Forest)
+House.build("House","The white paint flakes off the walls of the old house, the front door creaks open and closed with the blowing of the wind",None,None,None,None)
+Forest.build("Forest","The trees close in around you, the area is dimly lit by the few areas where the sun peaks through the canopy",None,None,None,None)
 Fist = Weapon(1, 5, "Fist")
 CDagger = Weapon(3, 4, "Common Dagger")
 CSword = Weapon(5, 2, "Common Sword")
 Eweapon = Fist
 OcRoom = Road
+print("You have moved to %s"% OcRoom.name)
 yname = input("Hello hero. Please tell us your name")
 Hero = You(yname, 0, 0, "Somethin broke", 100)
 Hero.attackmanage(Eweapon.damage, Eweapon.name, Eweapon.speed)
