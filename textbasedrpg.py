@@ -97,13 +97,13 @@ def moveroom(OcRoom):
     return(OcRoom)
 def Commandline(alwaysrun,Engaged,Hero):
   while alwaysrun < 1:
-    while Engaged.name == "None":
-        print("You are not in combat")
-        Maincommandline(Engaged,Hero)
     while not Engaged.name == "None":
         print("you are in combat")
         Combatcommandline(Engaged,Hero)
-        Engaged = Blankenemy
+        Engaged = copy.deepcopy(Blankenemy)
+    while Engaged.name == "None":
+        print("You are not in combat")
+        Maincommandline(Engaged,Hero)
 def combat(Engaged,Hero):
   if int(Engaged.weaponspeed) > int(Hero.weaponspeed):
     Hero.damage(Engaged.attack)
@@ -122,6 +122,7 @@ def combat(Engaged,Hero):
 def Maincommandline(Engaged,Hero):
     global maininput
     maininput = input("")
+    print(Engaged.name)
     if maininput == "Healthcheck":
         You.healthcheck(Hero)
     if maininput == "Attackcheck":
@@ -133,11 +134,10 @@ def Maincommandline(Engaged,Hero):
     if maininput == "Move":
       moveroom(OcRoom)
     if maininput == "Fight":
-      Engaged = random.choice(OcRoom.enemytable)
+      Engaged = copy.deepcopy(random.choice(OcRoom.enemytable))
       print(Engaged.name)
       Engaged.attackmanage(random.choice(Engaged.weapontable))
       Commandline(alwaysrun,Engaged,Hero)
-      
 def Combatcommandline(Engaged,Hero):
     Cengaged = Engaged
     while int(Cengaged.health) > 0:
@@ -156,7 +156,8 @@ def Combatcommandline(Engaged,Hero):
               quit()
             
             
-    Engaged = Blankenemy
+    Engaged = copy.deepcopy(Blankenemy)
+global alwaysrun
 alwaysrun = 0
 Fist = Weapon(1, 5, "Fist")
 BFist = Weapon(6,1,"Fist")
@@ -166,7 +167,7 @@ CSword = Weapon(5, 2, "Common Sword")
 Commonweapon = [CDagger,CSword]
 Bruteweapon = [BFist,Cudgel]
 Blankenemy = Enemy("None",None,None,"None",None,"None",None)
-Engaged = Blankenemy
+Engaged = copy.deepcopy(Blankenemy)
 Bandit = Enemy(
     "Bandit",
     1,
@@ -208,5 +209,6 @@ if Doublecheckname == "Yes":
         Eweapon = CSword
         Hero.attackmanage(Eweapon.damage, Eweapon.name, Eweapon.speed)
     print("Now Fight")
-    Engaged = Goblin
+    Engaged = copy.deepcopy(Goblin)
 Commandline(alwaysrun,Engaged,Hero)
+
